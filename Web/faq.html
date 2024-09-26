@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ</title>
+  <style>
+    body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f2f2f2;
+  justify-content: space-between;
+}
+
+.faq-column {
+  max-width: 50%;
+  width: 100%;
+  margin: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.faq-heading {
+  background-color: #3498db;
+  color: #fff;
+  text-align: center;
+  padding: 15px;
+  font-size: 24px;
+}
+
+.faq-item {
+  border-bottom: 1px solid #e0e0e0;
+  overflow: hidden;
+  position: relative;
+}
+
+.faq-question,
+.faq-answer {
+  padding: 20px;
+}
+
+.faq-question {
+  background-color: #3498db;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: relative;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-question:hover {
+  background-color: #2980b9;
+}
+
+.faq-answer {
+  display: none;
+  background-color: #fff;
+  color: #333;
+  line-height: 1.6;
+  transition: max-height 0.5s ease, opacity 0.5s ease;
+  padding: 0 20px;
+}
+
+.faq-item.active .faq-answer {
+  display: block;
+  max-height: 500px;
+  opacity: 1;
+}
+
+.faq-answer p:last-child {
+  margin-bottom: 0;
+}
+
+.faq-toggle {
+  font-size: 24px;
+}
+
+h1 {
+  text-align: center;
+  margin: 20px;
+  font-family: sans-serif;
+  font-size: 30px;
+}
+.main{
+  display:flex;
+}
+/* Media query for mobile view */
+@media (max-width: 768px) {
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .main{
+    display:block;
+  }
+  .faq-column {
+    max-width: 100%;
+    margin: 10px 0;
+  }
+
+  .faq-item {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .faq-question {
+    font-size: 18px;
+    padding: 10px;
+  }
+
+  .faq-answer {
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  .faq-toggle {
+    font-size: 20px;
+  }
+
+  h1 {
+    font-size: 24px;
+    margin: 10px;
+  }
+
+  
+  .faq-column {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+  </style>
+</head>
+<body>
+<h1> FAQs</h1>
+
+    <div class="main">
+        <div class="faq-column">
+        <!-- <div class="faq-heading"> AQI</div>. -->
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(1)">
+            <span class="faq-number">1</span>
+            1. Best Apple Varieties?
+            <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer" id="answer1"> Choose varieties suited to your region’s climate and soil.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(2)">
+            <span class="faq-number">2</span>
+            2. Managing Pests and Diseases?
+            <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer" id="answer2">Use IPM practices, monitor regularly, and apply targeted treatments.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(3)">
+            <span class="faq-number">3</span>
+            3. Fertilization Practices?
+            <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer" id="answer3">Use balanced fertilizers based on soil tests; consider organic options.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(4)">
+            <span class="faq-number">4</span>
+            4. Watering Needs?
+            <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer" id="answer4"> Water consistently, but avoid over-watering; use soil moisture sensors.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(5)">
+            <span class="faq-number">5</span>
+            5. Signs of Nutrient Deficiencies?
+            <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer" id="answer5">Yellowing leaves or poor fruit quality may indicate nutrient issues.</div>
+        </div>
+        </div>
+
+        <div class="faq-column">
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(6)">
+            <span class="faq-number">6</span>
+            6. Improving Soil Quality?
+            <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer" id="answer6">Add organic matter, use cover crops, and conduct regular soil tests.
+
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(7)">
+            <span class="faq-number">7</span>
+            7. Pruning Techniques?
+            <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer" id="answer7">Prune to remove dead branches, improve air circulation, and manage growth.
+
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(8)">
+            <span class="faq-number">8</span>
+            8. Increasing Yield and Quality?
+            <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer" id="answer8">Focus on variety selection, soil health, and effective pest management.
+
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(9)">
+            <span class="faq-number">9</span>
+            9. Benefits of Crop Rotation?
+            <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer" id="answer9">Reduces pests and diseases, improves soil health, and enhances farm resilience.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(10)">
+            <span class="faq-number">10</span>
+            10. Marketing Your Apples?
+            <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer" id="answer10">Use farmers’ markets, online sales, branding, and social media for promotion.</div>
+        </div>
+        </div>
+    </div>
+
+<script>
+  function toggleAnswer(questionNumber) {
+    var answerId = 'answer' + questionNumber;
+    var answerElement = document.getElementById(answerId);
+    var faqItem = answerElement.parentElement;
+
+    if (faqItem.classList.contains('active')) {
+      faqItem.classList.remove('active');
+      answerElement.style.display = 'none';
+    } else {
+      faqItem.classList.add('active');
+      answerElement.style.display = 'block';
+    }
+  }
+</script>
+
+</body>
+</html>

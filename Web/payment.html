@@ -1,0 +1,177 @@
+Payment Page
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"], input[type="email"], input[type="month"] {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+        }
+        .row input {
+            width: 48%;
+        }
+        .payment-methods {
+            margin-bottom: 20px;
+        }
+        .payment-details {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Payment Details</h2>
+    <form id="paymentForm" onsubmit="return handlePayment()">
+        <div class="payment-methods">
+            <label for="paymentMethod">Select Payment Method</label>
+            <select id="paymentMethod" name="paymentMethod" onchange="togglePaymentMethod()" required>
+                <option value="" disabled selected>Select Payment Method</option>
+                <option value="card">Credit/Debit Card</option>
+                <option value="cod">Cash on Delivery</option>
+                <option value="paypal">PayPal</option>
+            </select>
+        </div>
+
+        <!-- Credit/Debit Card Details -->
+        <div id="cardDetails" class="payment-details">
+            <label for="cardName">Name on Card</label>
+            <input type="text" id="cardName" name="cardName" placeholder="John Doe">
+
+            <label for="cardNumber">Card Number</label>
+            <input type="number" id="cardNumber" name="cardNumber" placeholder="1234 5678 9123 4567">
+
+            <div class="row">
+                <div>
+                    <label for="expDate">Expiration Date</label>
+                    <input type="month" id="expDate" name="expDate">
+                </div>
+                <div>
+                    <label for="cvv">CVV</label>
+                    <input type="number" id="cvv" name="cvv" placeholder="123">
+                </div>
+            </div>
+        </div>
+
+        <!-- Cash on Delivery -->
+        <div id="codDetails" class="payment-details">
+            <p>No additional details required for Cash on Delivery. You will pay upon receiving your order.</p>
+        </div>
+
+        <!-- PayPal Details -->
+        <div id="paypalDetails" class="payment-details">
+            <label for="paypalEmail">PayPal Email</label>
+            <input type="email" id="paypalEmail" name="paypalEmail" placeholder="example@paypal.com">
+        </div>
+
+        <button type="submit">Submit Payment</button>
+    </form>
+</div>
+
+<script>
+    function togglePaymentMethod() {
+        const paymentMethod = document.getElementById('paymentMethod').value;
+        const cardDetails = document.getElementById('cardDetails');
+        const codDetails = document.getElementById('codDetails');
+        const paypalDetails = document.getElementById('paypalDetails');
+
+    
+        cardDetails.style.display = 'none';
+        codDetails.style.display = 'none';
+        paypalDetails.style.display = 'none';
+
+        
+        if (paymentMethod === 'card') {
+            cardDetails.style.display = 'block';
+        } else if (paymentMethod === 'cod') {
+            codDetails.style.display = 'block';
+        } else if (paymentMethod === 'paypal') {
+            paypalDetails.style.display = 'block';
+        }
+    }
+
+    function handlePayment() {
+        const paymentMethod = document.getElementById('paymentMethod').value;
+
+        if (paymentMethod === 'card') {
+            const cardName = document.getElementById('cardName').value;
+            const cardNumber = document.getElementById('cardNumber').value;
+            const expDate = document.getElementById('expDate').value;
+            const cvv = document.getElementById('cvv').value;
+
+            if (!cardName || !cardNumber || !expDate || !cvv) {
+                alert("Please fill in all card details.");
+                return false;
+            }
+        } else if (paymentMethod === 'paypal') {
+            const paypalEmail = document.getElementById('paypalEmail').value;
+            if (!paypalEmail) {
+                alert("Please enter your PayPal email.");
+                return false;
+            }
+        }
+
+        
+        console.log("Payment Method:", paymentMethod);
+        if (paymentMethod === 'card') {
+            console.log("Card Name:", document.getElementById('cardName').value);
+            console.log("Card Number:", document.getElementById('cardNumber').value);
+        } else if (paymentMethod === 'paypal') {
+            console.log("PayPal Email:", document.getElementById('paypalEmail').value);
+        } else if (paymentMethod === 'cod') {
+            console.log("Cash on Delivery selected.");
+        }
+
+        alert("Payment details submitted successfully!");
+        return false; 
+    }
+</script>
+
+</body>
+</html>

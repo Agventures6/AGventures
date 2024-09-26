@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "84297589542",
+    "project_id": "agventure-19f2c",
+    "storage_bucket": "agventure-19f2c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84297589542:android:6f84fc8620256676f9d7e7",
+        "android_client_info": {
+          "package_name": "com.example.agventure"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYpF_NfDjenECS0RneBTfflc2cSryNTDE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

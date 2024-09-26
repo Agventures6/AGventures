@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: url('/mnt/data/backgnd.1.jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .login-container {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;
+        }
+        img {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: none;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        .remember-me {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #fff;
+            margin-top: 10px;
+        }
+        .remember-me label {
+            display: inline-flex;
+            align-items: center;
+        }
+        .remember-me input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        .forgot-password, .register-link {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            margin-top: 10px;
+        }
+        .register-link {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <img src="logo.jpeg" alt="Logo"> <!-- Add your logo file here -->
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="text" name="username" id="username" placeholder="Username" required>
+            <input type="password" name="password" id="password" placeholder="Password" required>
+            <div class="remember-me">
+                <label>
+                    <input type="checkbox" id="rememberMe"> Remember Me
+                </label>
+                <a href="forgot.html" class="forgot-password">Forgot Password?</a>
+            </div>
+            <input type="submit" value="Login">
+        </form>
+        <a href="register.html" class="register-link">Don't have an account? Register Now</a>
+    </div>
+
+    <script>
+        // Handle form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+
+            // Save to localStorage if "Remember Me" is checked
+            if (rememberMe) {
+                localStorage.setItem('rememberUsername', username);
+            } else {
+                localStorage.removeItem('rememberUsername');
+            }
+
+
+            alert('Login successful!');
+        
+            window.location.href = 'realtime.html';
+        });
+
+    
+        window.onload = function() {
+            const rememberedUsername = localStorage.getItem('rememberUsername');
+            if (rememberedUsername) {
+                document.getElementById('username').value = rememberedUsername;
+                document.getElementById('rememberMe').checked = true;
+            }
+        };
+    </script>
+</body>
+</html>

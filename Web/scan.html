@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanner Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #4CAF50; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; 
+        }
+        .container {
+            max-width: 500px; 
+            width: 100%;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7); 
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        h1 {
+            margin-top: 0;
+            color: #fff; 
+        }
+        #camera-feed {
+            width: 100%; 
+            height: auto;
+            border: 2px solid #fff;
+            border-radius: 8px;
+            display: block; 
+            margin-bottom: 20px;
+        }
+        #controls {
+            margin-bottom: 20px;
+        }
+        #upload-container {
+            margin: 20px 0;
+        }
+        #file-input {
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #fff;
+            color: #333;
+        }
+        #info-icon {
+            display: block;
+            margin: 20px auto 0; 
+            font-size: 24px;
+            cursor: pointer;
+            color: #007bff;
+        }
+        #instructions {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #ddd;
+            display: none; 
+        }
+        .btn {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            background-color: #007bff;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .instruction-point {
+            margin-top: 10px;
+            text-align: left;
+            color: #fff;
+            font-size: 14px;
+        }
+        .instruction-point::before {
+            content: '• ';
+            color: #ffeb3b; 
+        }
+        #nextPage {
+            background-color: #28a745; 
+            margin-top: 20px;
+        }
+        #nextPage:hover {
+            background-color: #218838; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Open Scanner</h1>
+        <video id="camera-feed" autoplay></video>
+        <div id="controls">
+            <button class="btn" id="start-camera" style="display: none;">Start Camera</button>
+            <button class="btn" id="stop-camera">Stop Camera</button>
+            <button class="btn" id="take-photo">Take Photo</button>
+            <button class="btn" id="take-video">Take Video</button>
+        </div>
+        <div id="upload-container">
+            <input type="file" id="file-input" accept="image/*">
+        </div>
+        <span class="icon" id="info-icon">?</span>
+        <div id="instructions">
+            <p class="instruction-point">Get close to the apple and make sure to fit the crop damage within the frame.</p>
+            <p class="instruction-point">Make sure the camera is properly focused on the apple damage.</p>
+            <p class="instruction-point">Make sure the apple is clearly visible and it's not too dark or bright.</p>
+        </div>
+       
+
+    <script>
+        let stream = null;
+        let mediaRecorder = null;
+        let recordedChunks = [];
+
+        async function startCamera() {
+            try {
+                const video = document.getElementById('camera-feed');
+                if (!stream) {
+                    stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    video.srcObject = stream;
+                    video.style.display = 'block';
+                    document.getElementById('start-camera').style.display = 'none';
+                    document.getElementById('stop-camera').style.display = 'inline-block';
+                    document.getElementById('take-photo').style.display = 'inline-block';
+                    document.getElementById('take-video').style.display = 'inline-block';
+                }
+            } catch (error) {
+                console.error('Error accessing camera: ', error);
+            }
+        }
+
+        function stopCamera() {
+            if (stream) {
+                let tracks = stream.getTracks();
+                tracks.forEach(track => track.stop());
+                stream = null;
+                document.getElementById('camera-feed').style.display = 'none';
+                document.getElementById('start-camera').style.display = 'inline-block';
+                document.getElementById('stop-camera').style.display = 'none';
+                document.getElementById('take-photo').style.display = 'inline-block'; 
+                document.getElementById('take-video').style.display = 'inline-block'; 
+            }
+        }
+
+        document.getElementById('start-camera').addEventListener('click', startCamera);
+        document.getElementById('stop-camera').addEventListener('click', stopCamera);
+
+        document.getElementById('take-photo').addEventListener('click', function() {
+            if (stream) {
+                const canvas = document.createElement('canvas');
+                const video = document.getElementById('camera-feed');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                const context = canvas.getContext('2d');
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                canvas.toBlob(function(blob) {
+                    
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'photo.png';
+                    link.click();
+                });
+            }
+        });
+
+        document.getElementById('take-video').addEventListener('click', async function() {
+            if (stream) {
+                const video = document.getElementById('camera-feed');
+                if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+                    mediaRecorder = new MediaRecorder(stream);
+                    mediaRecorder.ondataavailable = function(event) {
+                        if (event.data.size > 0) {
+                            recordedChunks.push(event.data);
+                        }
+                    };
+                    mediaRecorder.onstop = function() {
+                        const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                        recordedChunks = [];
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = 'video.webm';
+                        link.click();
+                    };
+                    mediaRecorder.start();
+                    document.getElementById('take-video').textContent = 'Stop Video';
+                } else if (mediaRecorder.state === 'recording') {
+                    mediaRecorder.stop();
+                    document.getElementById('take-video').textContent = 'Take Video';
+                }
+            }
+        });
+
+        document.getElementById('info-icon').addEventListener('click', function() {
+            const instructions = document.getElementById('instructions');
+            instructions.style.display = instructions.style.display === 'none' ? 'block' : 'none';
+        });
+
+        
+
+
+        window.onload = startCamera;
+    </script>
+</body>
+</html>

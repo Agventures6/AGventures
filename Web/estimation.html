@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple Production and Expenses</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('bk.jpg'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .outer-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px; 
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 2px solid #4CAF50;
+        }
+        .section-container {
+            width: 48%;
+            padding: 20px;
+            background-color: rgba(240, 240, 240, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .input-group, .input-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .input-group label, .input-row label {
+            font-weight: bold;
+            display: block;
+            width: 50%;
+        }
+        .input-group input, .input-row input, .input-row select {
+            width: 45%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result, .profit-box, .expenses-box {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+        .submit-btn, .next-btn {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .submit-btn:hover, .next-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Apple Production and Expenses</h1>
+
+    <div class="outer-container">
+        <!-- Apple Production Estimation Section (Left) -->
+        <div class="section-container">
+            <h2>Apple Production Estimation</h2>
+            <div class="input-group">
+                <label for="trees">Number of Apple Trees:</label>
+                <input type="number" id="trees" min="0" placeholder="Enter number of trees">
+            </div>
+            <div class="input-group">
+                <label for="apples-per-tree">Average Apples Per Tree:</label>
+                <input type="number" id="apples-per-tree" min="0" placeholder="Enter average apple per tree">
+            </div>
+            <div class="input-group">
+                <label for="weight-per-apple">Average weight Per Apple (grams):</label>
+                <input type="number" id="weight-per-apple" min="0" placeholder="Enter weight per apple">
+            </div>
+            <div class="input-group">
+                <label>Total Apples:</label>
+                <input type="text" id="total-apples" readonly>
+            </div>
+            <div class="input-group">
+                <label>Estimated Production (kg):</label>
+                <input type="text" id="estimated-production" readonly>
+            </div>
+
+            <div class="button-container">
+                <button onclick="calculateProduction()">Estimate Production</button>
+            </div>
+
+            <div class="result" id="result"></div>
+        </div>
+
+        <!-- Apple Expenses Section (Right) -->
+        <div class="section-container">
+            <h2>Apple Expenses</h2>
+            <div class="profit-box">
+                <h3>Total Profit: ₹<span id="totalProfit">0</span></h3>
+            </div>
+
+            <div class="income-section">
+                <div class="input-row">
+                    <label for="yield">Yield (kg)</label>
+                    <input type="number" id="yield" placeholder="0 kg" min="0" oninput="calculateProfit()">
+                </div>
+                <div class="input-row">
+                    <label for="pricePerKilo">Price per kilo (₹)</label>
+                    <input type="number" id="pricePerKilo" placeholder="₹ 0" min="0" oninput="calculateProfit()">
+                </div>
+            </div>
+
+            <div class="expenses-box">
+                <h3>Total Expenses: ₹<span id="totalExpenses">0</span></h3>
+            </div>
+
+            <div class="expense-section">
+                <h3>Add new expense</h3>
+                <div class="input-row">
+                    <select id="category">
+                        <option value="" disabled selected>Select category</option>
+                        <option value="Fertilizer">Fertilizer</option>
+                        <option value="Labor">Labor</option>
+                        <option value="Transportation">Transportation</option>
+                        <option value="Packaging">Packaging</option>
+                        <option value="Irrigation">Irrigation</option>
+                        <option value="Pest Control">Pest Control</option>
+                    </select>
+                </div>
+                <div class="input-row">
+                    <input type="text" id="expenseName" placeholder="Expense name (optional)">
+                    <input type="number" id="expensePrice" placeholder="₹ 0" min="0">
+                </div>
+
+                <button class="submit-btn" onclick="addExpense()">Add Expense</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        function calculateProduction() {
+            const trees = document.getElementById('trees').value;
+            const applesPerTree = document.getElementById('apples-per-tree').value;
+            const weightPerApple = document.getElementById('weight-per-apple').value;
+
+            const totalApples = trees * applesPerTree;
+            const totalProduction = totalApples * weightPerApple / 1000;
+
+            document.getElementById('total-apples').value = totalApples;
+            document.getElementById('estimated-production').value = totalProduction.toFixed(2);
+        }
+
+        
+        let totalExpenses = 0;
+
+        function addExpense() {
+            const category = document.getElementById('category').value;
+            const expensePrice = parseFloat(document.getElementById('expensePrice').value);
+
+            if (!category || isNaN(expensePrice) || expensePrice <= 0) {
+                alert("Please fill out all required fields with valid values.");
+                return;
+            }
+
+            totalExpenses += expensePrice;
+            document.getElementById('totalExpenses').textContent = totalExpenses;
+            document.getElementById('category').selectedIndex = 0;
+            document.getElementById('expenseName').value = '';
+            document.getElementById('expensePrice').value = '';
+
+            calculateProfit();
+        }
+
+        function calculateProfit() {
+            const yieldValue = parseFloat(document.getElementById('yield').value);
+            const pricePerKilo = parseFloat(document.getElementById('pricePerKilo').value);
+
+            let income = 0;
+            if (!isNaN(yieldValue) && !isNaN(pricePerKilo)) {
+                income = yieldValue * pricePerKilo;
+            }
+
+            const profit = income - totalExpenses;
+            document.getElementById('totalProfit').textContent = profit;
+        }
+    </script>
+
+</body>
+</html>

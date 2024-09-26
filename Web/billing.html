@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing Address</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="email"], input[type="tel"] {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .next-btn {
+            background-color: #007bff;
+        }
+        .next-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Billing Address</h2>
+    <form id="billingForm">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" name="fullName" placeholder="John Doe" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="john@example.com" required>
+
+        <label for="mobile">Mobile Number</label>
+        <input type="tel" id="mobile" name="mobile" placeholder="+1234567890" required>
+
+        <label for="address">Address</label>
+        <input type="text" id="address" name="address" placeholder="1234 Main St" required>
+
+        <label for="city">City</label>
+        <input type="text" id="city" name="city" placeholder="City" required>
+
+        <label for="state">State</label>
+        <input type="text" id="state" name="state" placeholder="State" required>
+
+        <label for="zip">Zip Code</label>
+        <input type="text" id="zip" name="zip" placeholder="123456" required>
+
+        <button type="submit">Submit</button>
+        <button type="button" id="nextButton" class="next-btn" style="display: none;" onclick="goToNextPage()">Next</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('billingForm').addEventListener('submit', function(event) {
+        event.preventDefault();  // Prevent form submission
+
+        // Collect form data
+        const formData = {
+            fullName: document.getElementById('fullName').value,
+            email: document.getElementById('email').value,
+            mobile: document.getElementById('mobile').value,
+            address: document.getElementById('address').value,
+            city: document.getElementById('city').value,
+            state: document.getElementById('state').value,
+            zip: document.getElementById('zip').value
+        };
+
+        // Display form data in console for testing
+        console.log('Form Data:', formData);
+
+        // Notify user (in practice, you would send this data to a server)
+        alert('Billing information submitted successfully!');
+
+        // Show the "Next" button
+        document.getElementById('nextButton').style.display = 'inline-block';
+    });
+
+    function goToNextPage() {
+        // Example redirection or action after form submission
+        window.location.href = 'payment.html'; // Redirect to the next page
+    }
+</script>
+
+</body>
+</html>

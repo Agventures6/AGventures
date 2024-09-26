@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Monitoring</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: url('https://images.idgesg.net/images/article/2017/10/wireless_network_internet_of_things_iot_thinkstock_853701554_3x2-100740688-large.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        h1 {
+            color: #fff;
+            background-color: #000000;
+            font-size: 2.5em;
+            margin: 0;
+            padding: 15px;
+        }
+        h2 {
+            font-size: 2em;
+            color: #ffcc00 ;
+            margin-top: 20px;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: stretch;
+            margin: 20px auto;
+            width: 90%;
+            max-width: 1200px;
+        }
+        
+        
+        .box {
+            background-color: lightgrey;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            margin: 10px;
+            flex: 1 1 200px; 
+            max-width: 250px;
+            color: #000000; 
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .box h2 {
+            margin-top: 0;
+            color: #333333;
+            font-size: 1.5em;
+        }
+
+        .box p {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #28a745; 
+            margin: 10px 0 0 0;
+        }
+
+        
+        #nextPage {
+            width: 150px;
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 30px;
+            display: inline-block;
+        }
+
+        #nextPage:hover {
+            background-color: #0056b3;
+        }
+
+    
+        @media (max-width: 1000px) {
+            .box {
+                max-width: 220px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .box {
+                max-width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Real-Time Monitoring</h1>
+    <h2>Cultivation Land</h2>
+
+    <div class="container">
+        <!-- Humidity Box -->
+        <div class="box">
+            <h2>Humidity</h2>
+            <p id="humidityDisplay">0.00 %</p>
+        </div>
+
+        <!-- Temperature Box -->
+        <div class="box">
+            <h2>Temperature</h2>
+            <p id="temperatureDisplay">0.00 °C</p>
+        </div>
+
+        <!-- Moisture Box -->
+        <div class="box">
+            <h2>Moisture</h2>
+            <p id="moistureDisplay">0.00</p>
+        </div>
+
+        <!-- Moisture 2 Box -->
+        <div class="box">
+            <h2>Moisture 2</h2>
+            <p id="moisture2Display">0.00</p>
+        </div>
+    </div>
+
+    <h2>Agricultural Land</h2>
+
+    <div class="container">
+        <!-- Humidity Box -->
+        <div class="box">
+            <h2>Humidity</h2>
+            <p id="humidityDisplayCultivated">0.00 %</p>
+        </div>
+
+        <!-- Temperature Box -->
+        <div class="box">
+            <h2>Temperature</h2>
+            <p id="temperatureDisplayCultivated">0.00 °C</p>
+        </div>
+
+        <!-- Moisture Box -->
+        <div class="box">
+            <h2>Moisture</h2>
+            <p id="moistureDisplayCultivated">0.00</p>
+        </div>
+    </div>
+
+  
+
+    <script type="module">
+        
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyAHAOZM_W6CNmRbxBa1qCWIA4Gza9ysfa0",
+            authDomain: "sih-hardware-202d6.firebaseapp.com",
+            databaseURL: "https://sih-hardware-202d6-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "sih-hardware-202d6",
+            storageBucket: "sih-hardware-202d6.appspot.com",
+            messagingSenderId: "939063608052",
+            appId: "1:939063608052:web:f43576e2164301c02d54a1"
+        };
+
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        
+        const humidityRef = ref(database, 'main/DHT/Humidity');
+        const temperatureRef = ref(database, 'main/DHT/Temperature');
+        const moistureRef = ref(database, 'main/Moisture1');
+        const moisture2Ref = ref(database, 'main/Moisture2');
+
+        
+        onValue(humidityRef, (snapshot) => {
+            const humidity = snapshot.val();
+            document.getElementById('humidityDisplay').innerText = humidity + ' %';
+        });
+
+        onValue(temperatureRef, (snapshot) => {
+            const temperature = snapshot.val();
+            document.getElementById('temperatureDisplay').innerText = temperature + ' °C';
+        });
+
+        onValue(moistureRef, (snapshot) => {
+            const moisture = snapshot.val();
+            document.getElementById('moistureDisplay').innerText = moisture;
+        });
+
+        onValue(moisture2Ref, (snapshot) => {
+            const moisture2 = snapshot.val();
+            document.getElementById('moisture2Display').innerText = moisture2;
+        });
+
+        
+        const humidityRefCultivated = ref(database, 'sensors/humidity');
+        const temperatureRefCultivated = ref(database, 'sensors/moisture');
+        const moistureRefCultivated = ref(database, 'sensors/temperature');
+
+    
+        onValue(humidityRefCultivated, (snapshot) => {
+            const humidity = snapshot.val();
+            document.getElementById('humidityDisplayCultivated').innerText = humidity + ' %';
+        });
+
+        onValue(temperatureRefCultivated, (snapshot) => {
+            const temperature = snapshot.val();
+            document.getElementById('temperatureDisplayCultivated').innerText = temperature + ' °C';
+        });
+
+        onValue(moistureRefCultivated, (snapshot) => {
+            const moisture = snapshot.val();
+            document.getElementById('moistureDisplayCultivated').innerText = moisture;
+        });
+
+    
+       
+    </script>
+
+</body>
+</html>

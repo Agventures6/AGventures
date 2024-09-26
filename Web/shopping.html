@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple Fertilizer and Apple Shop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+        }
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .product {
+            border: 1px solid #ddd;
+            padding: 15px;
+            background-color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .product img {
+            max-width: 70%;
+            height: auto;
+            border-radius: 5px;
+        }
+        input[type="number"] {
+            width: 50px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .cart {
+            margin-top: 30px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        #cartItems p {
+            margin: 8px 0;
+        }
+        .next-btn {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .next-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Apple Fertilizer and Apple Shop</h1>
+
+    <h2>Apple Fertilizers</h2>
+    <div class="product-container">
+        <!-- Fertilizers -->
+        <div class="product">
+            <img src="Fert.jpg" alt="Organic Apple Fertilizer">
+            <h2>Organic Apple Fertilizer</h2>
+            <p>Price: ₹750.00</p>
+            <label for="quantity1">Quantity:</label>
+            <input type="number" id="quantity1" value="0" min="0" max="10">
+            <button onclick="addToCart('Organic Apple Fertilizer', 750, parseInt(document.getElementById('quantity1').value))">Add to Cart</button>
+        </div>
+        <!-- Other fertilizers... -->
+
+        <!-- Apples -->
+        <div class="product">
+            <img src="fuji.jpg" alt="Fuji Apple">
+            <h2>Fuji Apple</h2>
+            <p>Price: ₹125.00</p>
+            <label for="appleQuantity1">Quantity:</label>
+            <input type="number" id="appleQuantity1" value="0" min="0" max="10">
+            <button onclick="addToCart('Fuji Apple', 125, parseInt(document.getElementById('appleQuantity1').value))">Add to Cart</button>
+        </div>
+        <!-- Other apples... -->
+    </div>
+
+    <div class="cart">
+        <h2>Your Cart</h2>
+        <div id="cartItems"></div>
+        <p id="totalPrice">Total: ₹0.00</p>
+        <button onclick="checkout()">Checkout</button>
+        <button id="nextButton" class="next-btn" style="display: none;" onclick="goToNextPage()">Next</button>
+    </div>
+
+    <script>
+        let cart = [];
+
+        function addToCart(itemName, price, quantity) {
+            if (quantity > 0) {
+                const existingItem = cart.find(item => item.name === itemName);
+                if (existingItem) {
+                    existingItem.quantity += quantity;
+                } else {
+                    cart.push({ name: itemName, price: price, quantity: quantity });
+                }
+                updateCart();
+            }
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            cartItems.innerHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                cartItems.innerHTML += `<p>${item.name} (x${item.quantity}): ₹${itemTotal.toFixed(2)}</p>`;
+            });
+
+            document.getElementById('totalPrice').innerText = `Total: ₹${total.toFixed(2)}`;
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+            } else {
+                alert(`Thank you for your order! Total: ₹${cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}`);
+                cart = [];
+                updateCart();
+                document.getElementById('nextButton').style.display = 'inline-block'; // Show the Next button
+            }
+        }
+
+        function goToNextPage() {
+            
+            window.location.href = 'billing.html'; 
+        }
+    </script>
+
+</body>
+</html>
